@@ -1,1 +1,4 @@
-[Docker](https://docker.io/) image for [bitcoind](http://github.com/bitcoin/bitcoin/).
+![Docker Stars](https://img.shields.io/docker/stars/exodusmovement/bitcoind.svg?style=flat-square)
+![Docker Pulls](https://img.shields.io/docker/pulls/exodusmovement/bitcoind.svg?style=flat-square)
+
+Bitcoin: http://github.com/bitcoin/bitcoin/
