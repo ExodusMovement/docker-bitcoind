@@ -3,8 +3,7 @@ FROM alpine:3.8
 RUN addgroup -g 1000 bitcoind \
   && adduser -u 1000 -G bitcoind -s /bin/sh -D bitcoind
 
-RUN bitcoindVersion='0.16.1' \
-  && apk add --no-cache \
+RUN apk add --no-cache \
     boost \
     boost-program_options \
     openssl \
@@ -21,9 +20,9 @@ RUN bitcoindVersion='0.16.1' \
     zeromq-dev \
   && mkdir build \
   && cd build \
-  && wget -O bitcoind.tar.gz https://github.com/bitcoin/bitcoin/archive/v$bitcoindVersion.tar.gz \
+  && wget -O bitcoind.tar.gz https://github.com/bitcoin/bitcoin/archive/v0.16.1.tar.gz \
   && tar -xf bitcoind.tar.gz \
-  && cd bitcoin-$bitcoindVersion \
+  && cd bitcoin-0.16.1 \
   && ./autogen.sh \
   && ./configure \
     --disable-shared \
@@ -31,6 +30,7 @@ RUN bitcoindVersion='0.16.1' \
     --disable-wallet \
     --disable-tests \
     --disable-bench \
+    --enable-zmq \
     --with-utils \
     --without-libs \
     --without-gui \
@@ -42,4 +42,9 @@ RUN bitcoindVersion='0.16.1' \
   && apk del /.build-deps
 
 USER bitcoind
-ENTRYPOINT ["/home/bitcoind/bitcoind"]
+
+# P2P & RPC
+EXPOSE 8333 8332
+
+WORKDIR /home/bitcoind
+ENTRYPOINT ["./bitcoind"]
