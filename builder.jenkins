@@ -1,0 +1,34 @@
+#!groovy
+// Build atp docker image
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent { 
+		label 'master'
+	}
+	triggers { pollSCM('* * * * *') }
+	options {
+		buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+		timestamps()
+	}
+    stages {
+		stage("Preparations") {
+			steps {
+				script {
+					deleteDir() /* clean up our workspace */
+				}	
+			}
+		}
+        stage("Build image") {
+            steps {
+			    script {
+					echo " ============== start bitcoind:{GIT_BRANCH} building =================="
+					sh """
+					docker build -t bitcoind:{GIT_BRANCH} .
+					"""
+					currentBuild.description += "bitcoind:{GIT_BRANCH} built"
+			    }
+			}
+        }
+    }
+}
