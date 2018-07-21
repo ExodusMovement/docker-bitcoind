@@ -12,13 +12,6 @@ pipeline {
 		timestamps()
 	}
     stages {
-		stage("Preparations") {
-			steps {
-				script {
-					deleteDir() /* clean up our workspace */
-				}	
-			}
-		}
         stage("Build image") {
             steps {
 			    script {
