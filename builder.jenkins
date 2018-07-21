@@ -3,7 +3,7 @@
 properties([disableConcurrentBuilds()])
 
 pipeline {
-    agent { 
+    agent {
 		label 'master'
 	}
 	triggers { pollSCM('* * * * *') }
@@ -19,7 +19,7 @@ pipeline {
 					sh """
 					docker build -t semaev/bitcoind:${GIT_BRANCH} .
 					"""
-					currentBuild.description = "bitcoind:${GIT_BRANCH} built"
+					currentBuild.description = "bitcoind:${GIT_BRANCH} built, "
 			    }
 			}
         }
