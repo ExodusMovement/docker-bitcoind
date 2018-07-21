@@ -31,6 +31,7 @@ pipeline {
 					    sh """
 					    docker push semaev/bitcoind:${GIT_BRANCH}
 					    """
+					}
 					currentBuild.description += "and pushed to registry"
 				}
             }
