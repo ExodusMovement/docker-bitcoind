@@ -22,11 +22,11 @@ pipeline {
         stage("Build image") {
             steps {
 			    script {
-					echo " ============== start bitcoind:{GIT_BRANCH} building =================="
+					echo " ============== start bitcoind:${GIT_BRANCH} building =================="
 					sh """
-					docker build -t bitcoind:{GIT_BRANCH} .
+					docker build -t bitcoind:${GIT_BRANCH} .
 					"""
-					currentBuild.description += "bitcoind:{GIT_BRANCH} built"
+					currentBuild.description += "bitcoind:${GIT_BRANCH} built"
 			    }
 			}
         }
