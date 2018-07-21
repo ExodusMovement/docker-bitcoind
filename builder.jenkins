@@ -17,11 +17,23 @@ pipeline {
 			    script {
 					echo " ============== start bitcoind:${GIT_BRANCH} building =================="
 					sh """
-					docker build -t bitcoind:${GIT_BRANCH} .
+					docker build -t semaev/bitcoind:${GIT_BRANCH} .
 					"""
-					currentBuild.description += "bitcoind:${GIT_BRANCH} built"
+					currentBuild.description = "bitcoind:${GIT_BRANCH} built"
 			    }
 			}
+        }
+        stage("Push docker images") {
+            steps {
+				script {
+					echo " ============== start bitcoind:${GIT_BRANCH} pushing =================="
+					withDockerRegistry([ credentialsId: "dockerhubcreds", url: "" ]) {
+					    sh """
+					    docker push semaev/bitcoind:${GIT_BRANCH}
+					    """
+					currentBuild.description += "and pushed to registry"
+				}
+            }
         }
     }
 }
