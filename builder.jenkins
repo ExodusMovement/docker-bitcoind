@@ -1,5 +1,5 @@
 #!groovy
-// Build atp docker image
+// Build and push bitcoind docker image
 properties([disableConcurrentBuilds()])
 
 pipeline {
@@ -8,11 +8,11 @@ pipeline {
 	}
 	triggers { pollSCM('* * * * *') }
 	options {
-		buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '30'))
+		buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
 		timestamps()
 	}
     stages {
-        stage("Build image") {
+        stage("Build docker image") {
             steps {
 			    script {
 					echo " ============== start bitcoind:${GIT_BRANCH} building =================="
@@ -23,7 +23,7 @@ pipeline {
 			    }
 			}
         }
-        stage("Push docker images") {
+        stage("Push docker image") {
             steps {
 				script {
 					echo " ============== start bitcoind:${GIT_BRANCH} pushing =================="
