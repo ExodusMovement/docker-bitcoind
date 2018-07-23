@@ -24,7 +24,7 @@ pipeline {
 			    script {
 					echo " ============== start bitcoind:${GIT_BRANCH} building =================="
 					sh """
-					docker build -t semaev/bitcoind:${GIT_BRANCH} .
+					docker build -t exodusmovement/bitcoind:${GIT_BRANCH} .
 					"""
 					currentBuild.description = "bitcoind:${GIT_BRANCH} built, "
 			    }
@@ -34,9 +34,9 @@ pipeline {
             steps {
 				script {
 					echo " ============== start bitcoind:${GIT_BRANCH} pushing =================="
-					withDockerRegistry([ credentialsId: "dockerhubcreds", url: "" ]) {
+					withDockerRegistry([ credentialsId: "exodusmovement-docker-creds", url: "" ]) {
 					    sh """
-					    docker push semaev/bitcoind:${GIT_BRANCH}
+					    docker push exodusmovement/bitcoind:${GIT_BRANCH}
 					    """
 					}
 					currentBuild.description += "and pushed to registry"
@@ -58,7 +58,7 @@ pipeline {
 		success {
 			slackSend channel: '#jenkins',
                 color: 'good',
-                message: "Job for building bitcoind:${GIT_BRANCH} finished ${env.BUILD_URL} ${env.BUILD_URL}"
+                message: "Job for building bitcoind:${GIT_BRANCH} finished ${env.BUILD_URL}"
 		}
 	}
 }
