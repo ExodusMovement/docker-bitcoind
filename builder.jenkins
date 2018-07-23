@@ -12,6 +12,13 @@ pipeline {
 		timestamps()
 	}
     stages {
+		stage("Preparations") {
+			steps {
+				slackSend channel: '#jenkins',
+					color: 'good',
+					message: "Job for building bitcoind:${GIT_BRANCH} started: ${env.BUILD_URL}"
+			}
+		}
         stage("Build docker image") {
             steps {
 			    script {
@@ -37,4 +44,21 @@ pipeline {
             }
         }
     }
+	post {
+		failure {
+			slackSend channel: '#jenkins',
+                color: 'danger',
+                message: "Job for building bitcoind:${GIT_BRANCH} failed ${env.BUILD_URL}"
+		}
+		aborted {
+			slackSend channel: '#jenkins',
+                color: 'warning',
+                message: "Job for building bitcoind:${GIT_BRANCH} aborted ${env.BUILD_URL}"
+		}
+		success {
+			slackSend channel: '#jenkins',
+                color: 'good',
+                message: "Job for building bitcoind:${GIT_BRANCH} finished ${env.BUILD_URL} ${env.BUILD_URL}"
+		}
+	}
 }
