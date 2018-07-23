@@ -18,10 +18,7 @@ RUN apk add --no-cache \
     libevent-dev \
     libtool \
     zeromq-dev \
-  && mkdir build \
-  && cd build \
-  && wget -O bitcoind.tar.gz https://github.com/bitcoin/bitcoin/archive/v0.16.1.tar.gz \
-  && tar -xf bitcoind.tar.gz \
+  && wget -qO- https://github.com/bitcoin/bitcoin/archive/v0.16.1.tar.gz | tar xz \
   && cd bitcoin-0.16.1 \
   && ./autogen.sh \
   && ./configure \
@@ -38,7 +35,7 @@ RUN apk add --no-cache \
   && strip -o /home/bitcoind/bitcoind src/bitcoind \
   && strip -o /home/bitcoind/bitcoin-cli src/bitcoin-cli \
   && chown bitcoind /home/bitcoind/bitcoin* \
-  && rm -rf /build \
+  && rm -rf /bitcoin-0.16.1 \
   && apk del /.build-deps
 
 USER bitcoind
