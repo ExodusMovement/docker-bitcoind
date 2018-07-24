@@ -1,0 +1,64 @@
+#!groovy
+// Build and push bitcoind docker image
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+    }
+    triggers { pollSCM('* * * * *') }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
+        timestamps()
+    }
+    stages {
+        stage("Preparations") {
+            steps {
+                slackSend channel: '#jenkins',
+                    color: 'good',
+                    message: "Job for building bitcoind:${GIT_BRANCH} started: ${env.BUILD_URL}"
+            }
+        }
+        stage("Build docker image") {
+            steps {
+                script {
+                    echo " ============== start bitcoind:${GIT_BRANCH} building =================="
+                    sh """
+                    docker build -t exodusmovement/bitcoind:${GIT_BRANCH} .
+                    """
+                    currentBuild.description = "bitcoind:${GIT_BRANCH} built, "
+                }
+            }
+        }
+        stage("Push docker image") {
+            steps {
+                script {
+                    echo " ============== start bitcoind:${GIT_BRANCH} pushing =================="
+                    withDockerRegistry([ credentialsId: "exodusmovement-docker-creds", url: "" ]) {
+                        sh """
+                        docker push exodusmovement/bitcoind:${GIT_BRANCH}
+                        """
+                    }
+                    currentBuild.description += "and pushed to registry"
+                }
+            }
+        }
+    }
+    post {
+        failure {
+            slackSend channel: '#jenkins',
+                color: 'danger',
+                message: "Job for building bitcoind:${GIT_BRANCH} failed ${env.BUILD_URL}"
+        }
+        aborted {
+            slackSend channel: '#jenkins',
+                color: 'warning',
+                message: "Job for building bitcoind:${GIT_BRANCH} aborted ${env.BUILD_URL}"
+        }
+        success {
+            slackSend channel: '#jenkins',
+                color: 'good',
+                message: "Job for building bitcoind:${GIT_BRANCH} finished ${env.BUILD_URL}"
+        }
+    }
+}
