@@ -12,7 +12,9 @@ pipeline {
     agent {
         label 'master'
     }
-    triggers { pollSCM('* * * * *') }
+    triggers {
+        githubPush()
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '15', artifactNumToKeepStr: '15'))
         timestamps()
