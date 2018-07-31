@@ -1,5 +1,5 @@
-![Docker Stars](https://img.shields.io/docker/stars/exodusmovement/bitcoind.svg?style=flat-square)
-![Docker Pulls](https://img.shields.io/docker/pulls/exodusmovement/bitcoind.svg?style=flat-square)
+[![Docker Stars](https://img.shields.io/docker/stars/exodusmovement/bitcoind.svg?style=flat-square)](https://hub.docker.com/r/exodusmovement/bitcoind/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/exodusmovement/bitcoind.svg?style=flat-square)](https://hub.docker.com/r/exodusmovement/bitcoind/)
 
 Bitcoin: http://github.com/bitcoin/bitcoin/
 
@@ -9,3 +9,6 @@ Branches and releases:
 
   - [0.16.1](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.1)
     - [0.16.1-001](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.1-001)
+
+  - [0.16.2](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.2)
+    - [0.16.2-001](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.1-002)
