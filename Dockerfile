@@ -10,8 +10,8 @@ RUN apk add --no-cache \
     libtool \
     zeromq-dev
 
-RUN wget -qO- https://github.com/bitcoin/bitcoin/archive/v0.16.1.tar.gz | tar xz
-WORKDIR /bitcoin-0.16.1
+RUN wget -qO- https://github.com/bitcoin/bitcoin/archive/v0.16.2.tar.gz | tar xz
+WORKDIR /bitcoin-0.16.2
 
 RUN ./autogen.sh
 RUN ./configure \
@@ -47,6 +47,6 @@ EXPOSE 8333 8332
 
 WORKDIR /home/bitcoind
 
-COPY --from=builder /bitcoin-0.16.1/src/bitcoind /bitcoin-0.16.1/src/bitcoin-cli ./
+COPY --from=builder /bitcoin-0.16.2/src/bitcoind /bitcoin-0.16.2/src/bitcoin-cli ./
 
 ENTRYPOINT ["./bitcoind"]
