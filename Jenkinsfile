@@ -1,6 +1,6 @@
 #!groovy
 // Build and push docker images by branches and tags
-// Required: "Basic Branch Build Strategies Plugin"
+// Required: "Basic Branch Build Strategies Plugin" and "GitHub SQS plugin"
 // GitHub Behaviours: Discover tags
 // GitHub Behaviours: Clean Before Checkout
 // GitHub Build strategies: Regular Branches
@@ -44,14 +44,11 @@ pipeline {
             }
         }
         stage("Build docker image") {
-            when { not { tag "*" } }
             steps {
                 script {
                     echo " ============== start building :latest from exodusmovement/${REPO_NAME}:${GIT_BRANCH} =================="
                     sh """
                     docker build \
-                        --force-rm \
-                        --no-cache \
                         -t exodusmovement/${IMAGE_NAME}:latest \
                         -t exodusmovement/${IMAGE_NAME}:${GIT_BRANCH} \
                         .
