@@ -47,6 +47,7 @@ EXPOSE 8333 8332
 
 WORKDIR /home/bitcoind
 
+RUN mkdir -p /home/bitcoind/.bitcoin
 COPY --chown=bitcoind:bitcoind --from=builder /bitcoin-0.16.2/src/bitcoind /bitcoin-0.16.2/src/bitcoin-cli ./
 
 ENTRYPOINT ["./bitcoind"]
