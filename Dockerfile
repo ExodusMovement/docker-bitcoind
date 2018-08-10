@@ -1,5 +1,7 @@
 FROM alpine:3.8 AS builder
 
+ENV BUILD_TAG 0.16.2
+
 RUN apk add --no-cache \
     autoconf \
     automake \
@@ -10,8 +12,8 @@ RUN apk add --no-cache \
     libtool \
     zeromq-dev
 
-RUN wget -qO- https://github.com/bitcoin/bitcoin/archive/v0.16.2.tar.gz | tar xz
-WORKDIR /bitcoin-0.16.2
+RUN wget -qO- https://github.com/bitcoin/bitcoin/archive/v$BUILD_TAG.tar.gz | tar xz && mv /bitcoin-$BUILD_TAG /bitcoin
+WORKDIR /bitcoin
 
 RUN ./autogen.sh
 RUN ./configure \
@@ -37,15 +39,13 @@ RUN apk add --no-cache \
   libevent \
   zeromq
 
+COPY --from=builder /bitcoin/src/bitcoind /bitcoin/src/bitcoin-cli /usr/local/bin/
+
 RUN addgroup -g 1000 bitcoind \
   && adduser -u 1000 -G bitcoind -s /bin/sh -D bitcoind
 
 USER bitcoind
-
 RUN mkdir -p /home/bitcoind/.bitcoin
-
-WORKDIR /home/bitcoind
-COPY --chown=bitcoind:bitcoind --from=builder /bitcoin-0.16.2/src/bitcoind /bitcoin-0.16.2/src/bitcoin-cli ./
 
 # P2P & RPC
 EXPOSE 8333 8332
@@ -58,7 +58,7 @@ ENV \
   BITCOIND_RPC_THREADS=4 \
   BITCOIND_ARGUMENTS=""
 
-CMD exec ./bitcoind \
+CMD exec bitcoind \
   -dbcache=$BITCOIND_DBCACHE \
   -par=$BITCOIND_PAR \
   -port=$BITCOIND_PORT \
