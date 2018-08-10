@@ -42,12 +42,26 @@ RUN addgroup -g 1000 bitcoind \
 
 USER bitcoind
 
+RUN mkdir -p /home/bitcoind/.bitcoin
+
+WORKDIR /home/bitcoind
+COPY --chown=bitcoind:bitcoind --from=builder /bitcoin-0.16.2/src/bitcoind /bitcoin-0.16.2/src/bitcoin-cli ./
+
 # P2P & RPC
 EXPOSE 8333 8332
 
-WORKDIR /home/bitcoind
+ENV \
+  BITCOIND_DBCACHE=450 \
+  BITCOIND_PAR=0 \
+  BITCOIND_PORT=8333 \
+  BITCOIND_RPC_PORT=8332 \
+  BITCOIND_RPC_THREADS=4 \
+  BITCOIND_ARGUMENTS=""
 
-RUN mkdir -p /home/bitcoind/.bitcoin
-COPY --chown=bitcoind:bitcoind --from=builder /bitcoin-0.16.2/src/bitcoind /bitcoin-0.16.2/src/bitcoin-cli ./
-
-ENTRYPOINT ["./bitcoind"]
+CMD exec ./bitcoind \
+  -dbcache=$BITCOIND_DBCACHE \
+  -par=$BITCOIND_PAR \
+  -port=$BITCOIND_PORT \
+  -rpcport=$BITCOIND_RPC_PORT \
+  -rpcthreads=$BITCOIND_RPC_THREADS \
+  $BITCOIND_ARGUMENTS
