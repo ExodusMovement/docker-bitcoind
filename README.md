@@ -15,3 +15,6 @@ Branches and releases:
     - [0.16.2-002](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.2-002)
     - [0.16.2-003](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.2-003)
     - [0.16.2-004](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.2-004)
+
+  - [0.16.3](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.3)
+    - [0.16.3-001](https://github.com/ExodusMovement/docker-bitcoind/tree/0.16.3-001)
