@@ -1,1 +1,1 @@
-https://github.com/bitcoin/bitcoin/releases/tag/v0.16.2
+https://github.com/bitcoin/bitcoin/releases/tag/v0.16.3
