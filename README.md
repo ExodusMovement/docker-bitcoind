@@ -2,7 +2,7 @@ Bitcoin: http://github.com/bitcoin/bitcoin/
 
 Image: https://quay.io/repository/exodusmovement/bitcoind
 
-Every new bitcoin release have own branch where branch name is bitcoin version. For each docker image release we create tag `BRANCH_NAME-xxx`, where `xxx` is release version for *current* branch. Docker image with latest tag is used only for development and contain last build (please do not use it for production!).
+Every Bitcoin release has its own branch, where the branch name corresponds to the bitcoin version used. For each docker image release we create the tag `BRANCH_NAME-xxx`, where `xxx` is the release version of the *current* branch. Thelatest tag is used only for development purposes and contains the last build (please do not use it on production!).
 
 Branches and releases:
 
